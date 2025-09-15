@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="data:image/svg+xml,
+        <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+            <text y=%22.9em%22 font-size=%2290%22>
+                🐶
+            </text>
+        </svg>"
+    >
+    <title>Update Jira Status</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Background CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script> 
+    <!-- Confetti JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        //Spinner 
+        function showLoading() {
+            const btn = document.getElementById('runBtn');
+            const spinner = document.getElementById('btnSpinner');
+            const btnText = document.getElementById('btnText');
+
+            spinner.classList.remove('hidden');
+            btnText.innerText = 'Processing…';
+            btn.disabled = true;
+            btn.classList.add('cursor-not-allowed');
+
+            //hide previous result
+            const resultDiv = document.getElementById('resultDiv');
+            if(resultDiv) resultDiv.classList.add('hidden');
+        
+        }
+
+        //Animation
+        function launchConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // Check result_message
+        window.addEventListener('DOMContentLoaded', () => {
+            const resultDiv = document.getElementById('resultDiv');
+            if (resultDiv && resultDiv.textContent.includes("Success")) {
+                launchConfetti();
+            }
+        });
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div id="vanta-bg" class="absolute top-0 left-0 w-full h-full -z-10"></div>
+    <div class="bg-white shadow-md rounded-xl p-6 w-full max-w-2xl">
+        <h1 class="text-2xl font-bold mb-4 text-center">🐳 🐠 🦞 Update Jira Status 🪼 🪸 🐙 </h1>
+
+        <!-- Form -->
+        <form method="POST" class="flex flex-col gap-4" onsubmit="showLoading();">
+        <label for="phase_name" class="font-semibold text-lg">Select Phase:👇</label>
+        <select id="phase_name" name="phase_name" 
+            class="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            {% for name in phase_names %}
+                <option value="{{ name }}" {% if name == request.form.get('phase_name') %}selected{% endif %}>
+                    {{ name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" id="runBtn" class="bg-cyan-500 text-white font-semibold py-2 rounded-md hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2">
+            <svg id="btnSpinner" class="h-5 w-5 animate-spin text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span id="btnText">Update</span>
+        </button>
+        </form>
+
+        <!-- Result -->
+        {% if result_message %}
+        <div id="resultDiv" class="mt-6 rounded-md p-4 text-center font-semibold text-lg
+            {% if 'Success' in result_message %}bg-green-100 animate-bounce{% elif 'Failed' in result_message %}bg-red-100{% endif %}">
+            {{ result_message|safe }}
+        </div>
+        {% else %}
+        <div id="resultDiv" class="mt-6 hidden"></div>
+        {% endif %}
+    </div>
+    <script>
+        VANTA.FOG({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        highlightColor: 0x5fdef0,
+        midtoneColor: 0xcfe8c2,
+        lowlightColor: 0x4161b1,
+        baseColor: 0xebe1cd
+        })
+    </script>
+</body>
+</html>

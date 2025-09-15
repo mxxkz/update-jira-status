@@ -1,0 +1,17 @@
+data:
+  - name: "SQ4 UAT CardX Sep 2025 Regression Mini"
+    project_name: "CardX - User Acceptance Testing"
+    version_name: "Sep 2025"
+    cycle_name: "SQ4"
+    webhook_path: "/macros/s/AKfycbxXGLGQri3Irb1s-70NsDmebVp1gEQVqQaQ3Kbj1lcQKY3HREuweplnGY5OK23AMtnEyg/exec"
+    env: "UAT"
+    folders: 
+      - "SQ4 - Regression - Mini"
+  - name: "SQ4 UAT CardX Sep 2025 Regression Mini#2"
+    project_name: "CardX - User Acceptance Testing"
+    version_name: "Sep 2025"
+    cycle_name: "SQ4"
+    webhook_path: "/macros/s/AKfycbwVdJh7CKbAcEFt25zjodLRUrowRH7MjdCMTQFCYwZgZogVnKj0wXrw_H7OHJgaW0Vs/exec"
+    env: "UAT"
+    folders: 
+      - "SQ4 - Regression - Mini #2"
