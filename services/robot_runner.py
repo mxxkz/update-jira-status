@@ -1,5 +1,6 @@
-import subprocess, os, re, yaml
-from services.ZephyrLibraryUat import ZephyrLibraryUat
+import os
+import yaml
+from robot import run as robot_run
 
 CONFIG_FILE = "config/data.yml"
 
@@ -18,26 +19,28 @@ def run_update_jira(selected_name):
 
     robot_file = os.path.join("services", "SQ4_Update_Jira_UAT.robot")
 
-    # base command
-    cmd = [
-        "robot",
-        "--variable", f"WEBHOOK_PATH:{record['webhook_path']}",
-        "--variable", f"PROJECT:{record['project_name']}",
-        "--variable", f"VERSION:{record['version_name']}",
-        "--variable", f"CYCLE:{record['cycle_name']}",
-        "--variable", f"ENV:{record['env']}",
+    # Prepare variables
+    variables = [
+        f"WEBHOOK_PATH:{record['webhook_path']}",
+        f"PROJECT:{record['project_name']}",
+        f"VERSION:{record['version_name']}",
+        f"CYCLE:{record['cycle_name']}",
+        f"ENV:{record['env']}"
     ]
 
-    # Only add folders if present in YAML
+    # Add folders if present
     if "folders" in record and record["folders"]:
-        for folder in record["folders"]:
-            folder_str = ";".join(record['folders'])
-        cmd.extend(["--variable", f"FOLDERS_STR:{folder_str}"])
+        folder_str = ";".join(record["folders"])
+        variables.append(f"FOLDERS_STR:{folder_str}")
 
+    # Run Robot Framework using Python API
+    # Don't pass stdout as a string; use default or None
+    result_code = robot_run(
+        robot_file,
+        variable=variables,
+        log=None,       # Disable HTML log
+        report=None,    # Disable HTML report
+        console='NONE'  # Avoid stdout issues
+    )
 
-    cmd.append(robot_file)
-
-    process = subprocess.run(cmd, capture_output=True, text=True)
-    output_str = re.sub(r"^(Output:.*|Log:.*|Report:.*)\n?", "", process.stdout, flags=re.MULTILINE).strip()
-
-    return process.returncode, output_str
+    return result_code, "Robot run finished."
