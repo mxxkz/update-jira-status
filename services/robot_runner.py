@@ -40,6 +40,7 @@ def run_update_jira(selected_name):
         variable=variables,
         log=None,       # Disable HTML log
         report=None,    # Disable HTML report
+        output=None,    # Disable HTML output
         console='NONE'  # Avoid stdout issues
     )
 
