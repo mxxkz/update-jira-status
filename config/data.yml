@@ -7,7 +7,7 @@ data:
     env: "UAT"
   - name: "SQ4 SIT CardX Wealth MFT"
     project_name: "CardX - System Integration Testing"
-    version_name: "Wealth Post-Greenfield Jan 2025"
+    version_name: "Wealth Post-Greenfield Jan 2026"
     cycle_name: "SQ4"
     webhook_path: "/macros/s/AKfycbxEoj8z2ok9dMhfd1OTMdHuOTs2AXz7nvh2wqcGd7wvHmrJpfUKl58ad-feu7w3Psw-/exec"
     env: "SIT"
